@@ -90,17 +90,8 @@ Try to read sas file and didn't
 pulse_df = read_sas("data/public_pulse_data.sas7bdat")
 ```
 
-# Section 1
 
-Here's a **code chunk** that samples from 
-a _normal distribution_:
-
+## how do I export data
 ```{r}
-samp = rnorm(100)
-length(samp)
+write_csv(fellow_df, "data/LotR_Words.xlsx")
 ```
-
-# Section 2
-
-I can take the mean of the sample, too!
-The mean is `r mean(samp)`.
