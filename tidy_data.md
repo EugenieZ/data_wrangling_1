@@ -19,6 +19,52 @@ pulse_tidy =
     values_to = "bdi"
   ) %>% 
   mutate(
-    visit = replace(visit, visit == "bl", "00m") #remember to use double "=" when replace
+    visit = replace(visit, visit == "bl", "00m") # remember to use double "=" when replace
   )
+```
+
+``` r
+analysis_df = tibble(
+  group = c("treatment", "treatment", "placebo", "placebo"),
+  time = c("pre", "post", "pre", "post"),
+  mean = c(4, 8, 3.5, 4)
+)
+
+analysis_df %>% 
+  pivot_wider(
+    names_from = "time",
+    values_from = "mean"
+  ) %>% 
+  knitr::kable() # output a nice table when report using "knit".
+```
+
+| group     | pre | post |
+|:----------|----:|-----:|
+| treatment | 4.0 |    8 |
+| placebo   | 3.5 |    4 |
+
+## bind\_rows
+
+``` r
+fellowship_df =
+  read_excel("data/LotR_Words.xlsx", range = "B3:D6") %>% 
+  mutate(movie = "fellowship_rings")
+
+two_towers_df =
+  read_excel("data/LotR_Words.xlsx", range = "F3:H6") %>% 
+  mutate(movie = "two_towers")
+
+return_df =
+  read_excel("data/LotR_Words.xlsx", range = "J3:L6") %>% 
+  mutate(movie = "return_king")
+
+lotr_df = 
+  bind_rows(fellowship_df, two_towers_df, return_df) %>% # never use 'rbind()'
+  janitor::clean_names() %>% 
+  pivot_longer(
+    female:male,
+    names_to = "sex",
+    values_to = "words"
+  ) %>% 
+  relocate(movie)
 ```
