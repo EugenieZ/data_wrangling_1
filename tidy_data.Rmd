@@ -71,3 +71,26 @@ lotr_df =
   relocate(movie)
 ```
 
+## jions
+
+Look at FAS data.
+```{r}
+litters_df =
+  read_csv("data/FAS_litters.csv") %>% 
+  janitor::clean_names() %>% 
+  separate(group, into = c("dose", "day_of_tx"), 3) %>% # but always use 'pivot_wider()'
+  relocate(litter_number) %>% 
+  mutate(dose = str_to_lower(dose))
+
+pups_df =
+    read_csv("data/FAS_pups.csv") %>% 
+    janitor::clean_names() %>% 
+    mutate(sex = recode(sex, "1" = "male", "2" = "female"))
+
+```
+
+## Let's join them up.
+```{r}
+fas_df = 
+  left_join(pups_df, litters_df, by = "litter_number")
+```
